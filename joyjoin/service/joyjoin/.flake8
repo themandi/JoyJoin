@@ -1,0 +1,8 @@
+[flake8]
+extend-ignore=
+    E261, # at least two spaces before inline comment
+    E501, # line too long
+[pycodestyle]
+ignore=
+    E261,
+    E501,

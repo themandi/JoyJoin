@@ -1,0 +1,42 @@
+#register_form {
+    line-height: 1.1;
+}
+
+#register_form input{
+    margin: 8px 0;
+    
+    font-size: 1.6rem;
+}
+
+#register_form input.incorrect {
+    border: solid 1px red;
+    background-color: #fff4f4;
+}
+
+#register_form input.correct {
+    border: solid 1px green;
+    background-color:white;
+}
+
+#register_form .warning label {
+    color: red;
+    font-size: 1.6rem;
+}
+
+#register_form div.warning {
+    display: none;
+    position:absolute;
+    white-space: nowrap;
+    background-color: white;
+    border-radius: 5px;
+    margin-left: 5px;
+    padding: 3px 5px 3px 5px;
+    border: solid 2px red;
+    visibility: visible;
+}
+
+#register_form hr {
+    margin: 2px 0px 2px 0px;
+    padding: 0px 0px 0px 0px;
+    border-top: 1px solid red;
+}

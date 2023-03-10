@@ -1,0 +1,13 @@
+{% extends 'common/frame.html' %}
+{% load static %}
+
+	{% block sscss %}
+	<link href="{% static 'post/post.css' %}" rel="stylesheet" type="text/css">
+	<link href="{% static 'post/comment.css' %}" rel="stylesheet" type="text/css">
+	{% endblock %}
+
+		{% block ssc %}
+		<div id="content">
+			{% include 'post/single_post.html' %}
+		</div>
+		{% endblock %}

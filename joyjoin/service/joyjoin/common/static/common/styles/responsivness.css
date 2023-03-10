@@ -1,0 +1,89 @@
+@media (max-width: 1200px) {
+     #left_placeholder {
+        display: none;
+     }
+     
+     #content {
+        margin-left: 0 !important;
+     }
+     
+     #mobile_menu {
+        display: block !important;
+     }
+     
+     #menu_icon {
+        display: inline-block !important;
+     }
+}
+
+@media (max-width: 950px) {
+    #content {
+        margin-right: 0 !important;
+    }
+    
+    #site {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+    }
+}
+
+@media (max-width: 900px) {
+     #right_placeholder {
+        display: none !important;
+     }
+     
+     #mobile_options {
+        display: block !important;
+     }
+     
+     #mobile_footer {
+        display: block !important;
+     }
+     
+     #site {
+        margin-top: 70px;
+     }
+}
+
+@media (max-width: 630px) {
+     #content {
+        width: 94% !important;
+     }
+     
+     #navbar button {
+        display: none !important;
+     }
+     
+     #navbar #user_name {
+        display: none !important;
+     }
+     
+     #navbar #account img {
+        margin: 0;
+     }
+     
+     .mobile_buttons {
+        display: block !important;
+     }
+}
+
+/* Czcionka */
+
+@media (max-width: 600px) {
+     html, body {
+        font-size: 9px;
+     }
+}
+
+@media (max-width: 500px) {
+     html, body {
+        font-size: 8px;
+     }
+}
+
+@media (max-width: 400px) {
+     html, body {
+        font-size: 7px;
+     }
+}

@@ -1,0 +1,178 @@
+{% load static%}
+
+{% if comm != ')' %}
+<hr class="invisible_spacer" />
+<!-- Kontener zawartosci komentarza -->
+<div class="comment_content">
+
+    <!-- Zdjecie i nazwa wyświetlana autora -->
+    <a href="{% url 'user:user' comm.author.login %}" class="img_login">
+        <img class="avatar" alt="awatar autora" src="{{comm.author.image_mini.url}}">
+        <b>{{ comm.author.name }}</b>
+        <span class="comm_creation_rel_time">{{comm.creation_rel_time}}</span>
+    </a>
+    <br>
+    <hr class="invisible_spacer">
+    {{ comm.text }}
+
+    <hr class="visible_spacer">
+
+    <!-- Panel komentarza -->
+    <form id="comm{{comm.id}}form_like" action="{% url 'post:vote_comment' 1 %}" method="post" autocomplete="off">
+        {% csrf_token %}
+        <input type="hidden" name="sec_view" value="false">
+        <input type="hidden" name="comm_id" value="{{comm.id}}">
+    </form>
+
+    <form id="comm{{comm.id}}form_dislike" action="{% url 'post:vote_comment' 2 %}" method="post" autocomplete="off">
+        {% csrf_token %}
+        <input type="hidden" name="sec_view" value="false">
+        <input type="hidden" name="comm_id" value="{{comm.id}}">
+    </form>
+
+    <ul class="post_options">
+        <!-- Like -->
+        {% if current_user %}
+            <li id="comm_like_button_{{comm.id}}" onclick="commentLike('like', {{comm.id}})">
+                {% if comm_is_liked %}
+                    <i class="icon-heart liked"></i> <b>{{comm_likes}}</b>
+                {% else %}
+                    <i class="icon-heart"></i> <b>{{comm_likes}}</b>
+                {% endif %}
+            </li>
+        {% else %}
+            <li id="login">
+                <i class="icon-heart"></i> <b>{{comm_likes}}</b>
+            </li>
+        {% endif %}
+
+        <!-- Unlike -->
+        {% if current_user %}
+            <li id="comm_dislike_button_{{comm.id}}" onclick="commentLike('dislike', {{comm.id}})">
+                {% if comm_is_disliked %}
+                    <i class="icon-heart-broken disliked"></i> {{comm_dislikes}}
+                {% else %}
+                    <i class="icon-heart-broken"></i> {{comm_dislikes}}
+                {% endif %}
+            </li>
+        {% else %}
+            <li id="login">
+                <i class="icon-heart-broken"></i> {{comm_dislikes}}
+            </li>
+        {% endif %}
+
+        <!-- Komentarz -->
+        {% if current_user %}
+            <li id="comm{{comm.id}}button_reply">
+                <i class="icon-comment"></i>
+                <i class="votes_number">({{comm.count_all_replies}})</i>
+            </li>
+        {% else %}
+            <li id="login">
+                <i class="icon-comment"></i>
+                <i class="votes_number">({{comm.count_all_replies}})</i>
+            </li>
+        {% endif %}
+
+        <!-- Zgłoszenie -->
+        <li>
+            <i class="icon-hammer"></i>
+        </li>
+    </ul>
+
+</div>
+
+<!-- Kontener pod komentarzem -->
+<div id="comm{{comm.id}}under_comment" {% if comm.count_direct_replies == 0 %}hidden{% endif %}>
+
+    <table>
+        <tr>
+
+            <!-- Panel po lewej stronie odpowiedzi -->
+            <td class="left_spacer">
+                <!-- PRZYCISK do chowania odpowiedzi -->
+                <button id="comm{{comm.id}}button_hide_replies" class="hide_replies"></button>
+            </td>
+
+            <td class="right_spacer">
+                <!-- Kontener panelu odpowiedzi -->
+                {% if current_user %}
+                    {% if not comm.is_max_depth %}
+                    <div hidden=true id="comm{{comm.id}}reply_panel" class="reply_panel">
+                        <a href="{% url 'user:user' current_user.login %}" class="img_login">
+                            <img src="{{current_user.image_mini.url}}" >
+                            <b>{{ current_user.name }}</b>
+                        </a>
+
+                        <form action="{% url 'post:reply' %}" method="post" autocomplete="off">
+                            {% csrf_token %}
+                            <input type="hidden" name="post_id" value="{{post.id}}">
+                            <input type="hidden" name="comm_id" value="{{comm.id}}">
+                            <textarea name="comment" required placeholder="Napisz komentarz..."></textarea>
+                            <input type="submit" value="Dodaj komentarz">
+                        </form>
+                    </div>
+                    {% else %}
+                        <i hidden=true id="comm{{comm.id}}reply_panel" class="warning">
+                            Osiągnięto maksymalną głebokość komentarza ({{comment_max_depth}}).
+                        </i>
+                    {% endif %}
+
+                {% endif %}
+
+                <!-- PRZYCISK do pokazywania odpowiedzi -->
+                <button id="comm{{comm.id}}button_show_replies" hidden=true class="show_replies">Pokaz odpowiedzi</button>
+
+                <!-- Kontener odpowiedzi -->
+                <div id="comm{{comm.id}}replies">
+{% else %}
+
+                </div>
+            </td>
+
+        </tr>
+
+
+
+    </table>
+
+</div>
+
+{% endif%}
+
+<script>
+    document.getElementById("comm{{comm.id}}button_hide_replies").addEventListener("click", function() {
+        document.getElementById("comm{{comm.id}}replies").hidden = true;
+        document.getElementById("comm{{comm.id}}button_hide_replies").hidden = true;
+        document.getElementById("comm{{comm.id}}button_show_replies").hidden = false;
+        document.getElementById("comm{{comm.id}}reply_panel").hidden = true
+    }, false);
+    document.getElementById("comm{{comm.id}}button_show_replies").addEventListener("click", function() {
+        document.getElementById("comm{{comm.id}}replies").hidden = false;
+        document.getElementById("comm{{comm.id}}button_hide_replies").hidden = false;
+        document.getElementById("comm{{comm.id}}button_show_replies").hidden = true;
+    }, false);
+
+    document.getElementById("comm{{comm.id}}button_reply").addEventListener("click", function() {
+        document.getElementById("comm{{comm.id}}replies").hidden = false;
+        document.getElementById("comm{{comm.id}}button_hide_replies").hidden = false;
+        document.getElementById("comm{{comm.id}}button_show_replies").hidden = true;
+
+        if (document.getElementById("comm{{comm.id}}reply_panel").hidden == true) {
+            // otworzenie panelu odpowiedzi
+            document.getElementById("comm{{comm.id}}under_comment").hidden = false;
+            document.getElementById("comm{{comm.id}}reply_panel").hidden = false;
+            {% if comm.count_direct_replies == 0 %}
+             document.getElementById("comm{{comm.id}}button_hide_replies").hidden = true
+            {% endif %};
+        }
+        else {
+            // zakmniecie panelu odpowiedzi
+            document.getElementById("comm{{comm.id}}reply_panel").hidden = true;
+             {% if comm.count_direct_replies == 0 %}
+             document.getElementById("comm{{comm.id}}under_comment").hidden = true
+             {% endif %};
+        }
+    }, false);
+
+</script>

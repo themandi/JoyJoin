@@ -1,0 +1,159 @@
+{% load static %}
+<!DOCTYPE HTML>
+<html lang="pl">
+<head>
+    <!-- Podstawowe meta tagi -->
+	<meta charset="utf-8">
+	<title>JoyJoin</title>
+	<link rel="Shortcut icon" href="{% static 'common/img/logo/jjicon.png' %}"/>
+	<meta name="desription" content="Opis">
+	<meta name="keywords" content="Słowa kluczowe">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Linki do plikow css, ikon, czcionek -->
+    <link href="{% static 'common/styles/common.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'common/styles/register_form.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'common/styles/tags.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'common/fonts/fontello/css/fontello.css' %}" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Gelasio&display=swap" rel="stylesheet">
+    
+    <link href="{% static 'common/styles/responsivness.css' %}" rel="stylesheet" type="text/css">
+    
+    {% block sscss %} {# (site-specific CSS) Przy użyciu tego bloku można dodać arkusze stylu CSS do konkretnej strony #} {% endblock %}
+</head>
+
+<body>
+    <div id="navbar"{% if not this_is_section_view %}class="navbar-color"{% endif %}>
+        <div>
+            <a href="{% url 'all:all' %}"><img id="logo" src="{% static 'common/img/logo/jj300x90.png' %}" alt="logo"></a>
+            <form>
+                <!-- TODO <input type="text" placeholder="szukaj">
+                <button id="find"> <i class="icon-search"></i> </button>-->
+            </form>
+        </div>
+        <div>
+            {% if current_user %}
+                <div id="account">
+                    <span id="user_name">{{ current_user.name }}</span> <img class="avatar" alt="Twój awatar" src="{{ current_user.image_mini.url}}">
+                </div>
+            {% else %}
+                {% if not is_register_site %}
+                    <button id="register"> <i class="icon-user-plus"></i> Zarejestruj </button>
+                {% endif %}
+                <button id="login"> <i class="icon-user"></i> Zaloguj </button>
+            {% endif %}
+            <i id="menu_icon" class="icon-menu" onclick="show_mobile_menu()"></i>
+        </div>
+    </div> <!-- Koniec #navbar -->
+
+    {% if current_user %}
+        <div id="account-window">
+            <ul>
+                <li> <a href="{% url 'user:user' current_user.login %}"> <i class="icon-user-1"></i> Zobacz profil</a> <hr> </li>
+                <!--TODO <li> <a href=""> <i class="icon-mail-alt"></i> Wiadomości</a> <hr> </li>
+                <li> <a href=""> <i class="icon-bell-alt"></i> Powiadomienia</a> <hr> </li> -->
+                <li> <a href="{% url 'settings:settings' %}"> <i class="icon-cog"></i> Ustawienia</a> <hr> </li>
+                <li> <a href="{% url 'report:report' %}"> <i class="icon-cancel-2"></i> Zgłoś błąd</a> <hr> </li>
+                <li> <a href="{% url 'login:logout' %}"> <i class="icon-off"></i> Wyloguj</a> </li>
+            </ul>
+        </div> <!-- Koniec #account-window -->
+    {% else %}
+        <div id="login-window">
+            <form action="{% url 'login:verify' %}" method="post" autocomplete="on">
+            {% csrf_token %}
+                <input name="login" type=text required placeholder="Login lub e-mail"><br>
+                <input name="password" type=password required placeholder="Hasło"><br>
+                <!-- TODO <label> <input name="remember" type="checkbox"> Zapamietaj mnie</label> <br> -->
+                <input type="submit" value=Zaloguj>
+            </form>
+        </div> <!-- Koniec #login-window -->
+    
+        <div id="dark-screen"></div>
+        {% if not is_register_site %}
+            <div id="register-window">
+                <i id="register-exit" class="icon-cancel"></i>
+                {% include 'common/register_form.html' %}
+            </div>
+        {% endif %}
+    {% endif %}
+
+    {% block hero-image %} {# tu mozna dodac hero-image (tylko w /all) #} {% endblock %}
+
+    <div id="mobile_menu">
+    </div>
+
+    <div id="site">
+        <div id="left_placeholder" class="placeholder">
+            <div id="left-menu">
+                {% if current_user %}
+                    {% if user_sections %}
+                    <ul>
+                        <li>Twoje sekcje<hr></li>
+                        {% for sec in user_sections %}
+                            <li> <a {% if sec.name == current_section_name %}class="selected"{% endif %} href="{% url 'sec:section' sec.name %}"> <i class="icon-{{sec.icon}}"></i> {{ sec.description }}</a> <hr> </li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                    {% if recommended_sections %}
+                    <ul>
+                        <li>Lista sekcji<hr></li>
+                        {% for sec in recommended_sections %}
+                            <li> <a {% if sec.name == current_section_name %}class="selected"{% endif %} href="{% url 'sec:section' sec.name %}"> <i class="icon-{{sec.icon}}"></i> {{ sec.description }}</a> <hr> </li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                {% else %}
+                    <ul>
+                        <li>Lista sekcji<hr></li>
+                        {% for sec in popular_sections %}
+                            <li> <a {% if sec.name == current_section_name %}class="selected"{% endif %} href="{% url 'sec:section' sec.name %}"> <i class="icon-{{sec.icon}}"></i> {{ sec.description }}</a> <hr> </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div> <!-- Koniec #left-menu -->
+        </div> <!-- Koniec .placeholder -->
+
+       <div id="right_placeholder" class="placeholder">
+            <div id="right-menu">
+                
+                <ul id="available-options">
+                    <li>Dostępne opcje</li>
+                    {% block available-options %} {# tutaj można dodać dostępne opcje #} {% endblock %}
+                    <li> <a href="{% url 'report:report' %}">Zgłoś błąd</a> </li>
+                </ul>
+                
+                {% block right-menu %} {# tutaj można dodać rzeczy widoczne w right-menu #} {% endblock %}
+
+                <a href="https://brave.com/joy155" target="_blank">
+                    <img id="banner" src="{% static 'common/img/brave_banner.png' %}" alt="banner"><hr>
+                </a>
+
+                <div id="footer">
+                    <a href="https://aleks-2.mat.umk.pl/pz2019/zesp08/" target="_blank">O nas</a>
+                    <a onclick="showcontact()">Kontakt</a>
+                    <a href="{% url 'rules' %}">Regulamin</a> <br><br>
+                    <div class="kontakt">
+                        Zespół JoyJoin <br>
+                        joyjoin.team@gmail.com<br><br>
+                    </div>                    Zespół VIII Wydział Matematyki i Informatyki UMK © copyright 2019-2020
+                </div>
+            </div>
+        </div> <!-- Koniec #right-menu -->
+        
+        {% block ssc %} {# ssc od site specific content #}
+        {# tutaj wstawiamy zawartość strony #}
+        {% endblock %}
+    </div> <!-- Koniec #site -->
+
+    <!-- Linki do bibliotek JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="{% static 'common/scripts/scripts.js' %}" type="text/javascript"></script>
+    <script src="{% static 'common/scripts/register_form.js' %}" type="text/javascript"></script>
+    {% block ssjs %} {# (site-specific JS) Przy użyciu tego bloku można dodać pliki JavaScript do konkretnej strony #} {% endblock %}
+    
+    {% block forms %} {# Tutaj można dodawać formularze, które będę wysyłane za pomocą ajax #} {% endblock %}
+
+</body>
+</html>

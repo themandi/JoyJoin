@@ -1,0 +1,25 @@
+{% extends 'common/frame.html' %}
+{% load static %}
+
+	{% block sscss %}
+	<link href="{% static 'login/login.css' %}" rel="stylesheet" type="text/css">
+	<link href="{% static 'register/register.css' %}" rel="stylesheet" type="text/css">
+	{% endblock %}
+
+		{% block ssc %}
+		<div id="content">
+			<h1>Logowanie</h1>
+			<form action="{% url 'login:verify' %}" method="post" autocomplete="on">
+			{% csrf_token %}
+				<input name="login" type=text required placeholder="Login lub e-mail"><br>
+				<input name="password" type=password required placeholder="Hasło"><br>
+				<input name="remember" type="checkbox">
+				<span>Zapamietaj mnie</span><br>
+				<div id="warning">
+					Nieprawidłowy login lub hasło użytkownika. Jeżeli nie masz konta <a href="{% url 'register:register' %}">zarejestruj się</a>. <br>
+					W razie problemów <a href="{% url 'report:report'%}">zgłoś błąd</a>. <br>
+				</div>
+				<input type="submit" value=Zaloguj>
+			</form>
+		</div>
+		{% endblock %}

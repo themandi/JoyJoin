@@ -1,0 +1,46 @@
+{% load static %}
+<!DOCTYPE HTML>
+<html lang="pl">
+<head>
+    <!-- Podstawowe meta tagi -->
+	<meta charset="utf-8">
+	<title>JoyJoin</title>
+	<link rel="Shortcut icon" href="{% static 'common/img/logo/jjicon.png' %}"/>
+	<meta name="desription" content="Opis">
+	<meta name="keywords" content="Słowa kluczowe">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!-- Linki do plikow css, ikon, czcionek, bibliotek JS -->
+    <link href="{% static 'common/styles/common.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'common/styles/tags.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'common/fonts/fontello/css/fontello.css' %}" rel="stylesheet" type="text/css">
+	<link href="{% static 'common/styles/error_404.css' %}" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Gelasio&display=swap" rel="stylesheet">
+    
+    <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    
+</head>
+
+<body>
+    <div id="site">
+        <div id="content">
+            <div class="tekst-lewastrona">
+            <h1><span class="tekst-naglowek-kolor">ERROR </span>404</h1>
+            Strona 404 nie znaleziona <br><br>
+            Hej, jak Ty to zrobiłeś?<br>
+            Nie majstruj tyle przy adresie!<br>
+            Jeśli doszukałeś się błędu<br>
+            w naszej stronie - zgłoś to!<br>
+            Zajmiemy się tym!<br><br>
+            <a href="{% url 'all:all' %}">Wróć na stronę główną</a> <br>
+            <a href="{% url 'report:report' %}">Zgłoś błąd</a> <br>
+            </div>
+    
+            <div class = "tekst-prawastrona">
+            <img alt="smutny kot" class = "obrazek" src="{% static 'common/img/kot.jpg' %}"><br>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

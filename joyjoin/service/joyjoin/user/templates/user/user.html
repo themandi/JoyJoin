@@ -1,0 +1,57 @@
+{% extends 'common/frame.html' %}
+{% load static %}
+
+	{% block sscss %}
+	<link href="{% static 'user/user.css' %}" rel="stylesheet" type="text/css">
+	<link href="{% static 'post/post.css' %}" rel="stylesheet" type="text/css">
+	<link href="{% static 'post/simple_comment.css' %}" rel="stylesheet" type="text/css">
+	{% endblock %}
+
+		{% block ssc %}
+		<div id="content">
+			<div id="profile">
+				<div id="user">
+					<h1>Profil użytkownika</h1>
+					<img class="avatar" alt="awatar użytkownika" src="{{user.image.url}}"><br>
+					<b>{{ user.name }}</b>
+				</div>
+				{# <b>Ilość dodanych postów:</b> 69<br> #}
+				{# <b>Ilość sekcji do których należy:</b> 3 <br> #}
+				<b>Data dołączenia:</b> {{user.creation_time|date:"d E Y"}}<br>
+				<b>Login: </b> {{ user.login }} <br>
+				<b>Opis: </b> {{ user.description|default:'Ten użytkownik nie dodał jeszcze opisu.' }} <br>
+				<b>Ostatnio aktywny: </b> {{ user.last_activity_rel_time }} <br>
+			</div>
+
+			{% if posts_to_display %}
+			<br> <hr> <h2>Dodane posty</h2> <hr> <br>
+			{% for post,liked,disliked,is_liked,is_disliked,comments in posts_to_display %}
+                {% include 'post/single_post.html' %}
+			{% endfor %}
+			
+			{% endif %}
+
+		</div>
+		{% endblock %}
+
+	{% block available-options %}
+		{% if current_user %}
+			{% if current_user.name == user.name %}
+					<li> <a href="{% url 'settings:settings' %}">Zmień dane</a> </li>
+			{% else %}
+					<!-- TODO<li> <a href="">(Napisz wiadomość)</a> </li>
+					<li> <a href="">(Obserwuj)</a> </li>-->
+			{% endif %}
+		{% endif %}
+	{% endblock %}
+	
+	{% block forms %}
+    <div id="up">
+        <i class="icon-up"></i>
+    </div>
+    
+	<form id="display_new_posts" action="{% url 'post:display_new_posts' %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="user_name" value="{{user.login}}">
+    </form>
+	{% endblock %}

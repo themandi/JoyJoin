@@ -1,0 +1,35 @@
+html, body {
+    height: 100%;
+}
+
+/* Początek styli #hero-image */
+#hero-image {
+    width: 100%;
+    height: 100%;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    
+    box-shadow: 0px 10px 100px 0px rgba(0,0,0,0.6);
+    
+    /* (Tutaj można zmienić hero-image) */
+    background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.4)), url(../../common/img/hero-image.jpg);    
+    background-size: cover;
+    background-position: center center;
+}
+#hero-image img {
+    width: 30vmax;
+}
+
+#hero-image h1 {
+    font-size: 3.6vmax;
+    font-weight: bold;
+    color: white;
+}
+
+.sec {
+    height: 66% !important;
+}
+/* Koniec styli #hero-image */

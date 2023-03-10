@@ -1,0 +1,90 @@
+{% load static %}
+
+{% for comm, comm_likes, comm_dislikes, comm_is_liked, comm_is_disliked in comments %}
+
+<!-- Kontener zawartosci komentarza -->
+    <div class="comment_content">
+
+        <!-- Zdjecie i login autora -->
+        <a href="{% url 'user:user' comm.author.login %}" class="img_login">
+            <img class="avatar" src="{{comm.author.image_mini.url}}">
+            <b>{{ comm.author.name }}</b>
+            <span class="comm_creation_rel_time">{{comm.creation_rel_time}}</span>
+        </a>
+        <br>
+        <hr class="invisible_spacer">
+        {{ comm.text }}
+
+        <hr class="visible_spacer">
+
+        <!-- Panel komentarza -->
+        <form id="comm{{comm.id}}form_like" action="{% url 'post:vote_comment' 1 %}" method="post" autocomplete="off">
+            {% csrf_token %}
+            <input type="hidden" name="sec_view" value="false">
+            <input type="hidden" name="comm_id" value="{{comm.id}}">
+        </form>
+
+        <form id="comm{{comm.id}}form_dislike" action="{% url 'post:vote_comment' 2 %}" method="post" autocomplete="off">
+            {% csrf_token %}
+            <input type="hidden" name="sec_view" value="false">
+            <input type="hidden" name="comm_id" value="{{comm.id}}">
+        </form>
+
+        <ul class="post_options">
+            <!-- Like -->
+            {% if current_user %}
+                <li  id="comm_like_button_{{comm.id}}" onclick="commentLike('like', {{comm.id}})">
+                    {% if comm_is_liked %}
+                        <i class="icon-heart liked"></i> <b>{{comm_likes}}</b>
+                    {% else %}
+                        <i class="icon-heart"></i> <b>{{comm_likes}}</b>
+                    {% endif %}
+                </li>
+            {% else %}
+                <li id="login">
+                    <i class="icon-heart"></i> <b>{{comm_likes}}</b>
+                </li>
+            {% endif %}
+
+            <!-- Unlike -->
+            {% if current_user %}
+                <li id="comm_dislike_button_{{comm.id}}" onclick="commentLike('dislike', {{comm.id}})">
+                    {% if comm_is_disliked %}
+                        <i class="icon-heart-broken disliked"></i> {{comm_dislikes}}
+                    {% else %}
+                        <i class="icon-heart-broken"></i> {{comm_dislikes}}
+                    {% endif %}
+                </li>
+            {% else %}
+                <li id="login">
+                    <i class="icon-heart-broken"></i> {{comm_dislikes}}
+                </li>
+            {% endif %}
+
+            <!-- Komentarz -->
+            <li id="comm{{comm.id}}button_reply">
+                <a href="{% url 'post:post' post.id %}" style="all:unset">
+                <i class="icon-comment"></i>
+                <i class="votes_number">({{comm.count_all_replies}})</i>
+                </a>
+            </li>
+
+            <!-- Zgłoszenie -->
+            <li>
+                <i class="icon-hammer"></i>
+            </li>
+        </ul>
+
+    </div>
+
+{% endfor %}
+
+<hr class="invisible_spacer">
+<hr class="invisible_spacer">
+<a href="{% url 'post:post' post.id %}" class="show_more_comments">
+    {% if post.count_remaining_comments != 0 %}
+        Pokaż więcej komentarzy ({{ post.count_remaining_comments }})
+    {% else %}
+        Pokaż pełny widok komentarzy
+    {% endif %}
+</a>

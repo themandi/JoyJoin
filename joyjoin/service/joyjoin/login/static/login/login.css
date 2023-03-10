@@ -1,0 +1,11 @@
+#site #content #warning {
+    font-size: 1.2rem;
+    color: red;
+    margin-bottom: 5px;
+    line-height: 1.5;
+}
+
+#site #content #warning a {
+    color: red;
+    font-weight: bold;    
+}

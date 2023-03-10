@@ -1,0 +1,28 @@
+{% extends 'common/frame.html' %}
+{% load static %}
+
+	{% block sscss %}
+	<link href='{% static 'sec/styles/tags.css' %}' rel='stylesheet' type='text/css'>
+	{% endblock %}
+	
+		{% block ssc %}
+		<div id='content'>
+            <h1>Lista tagów</h1>
+			<ul id="tag_list">
+			{% for type, tag, pop in tags_to_display %}
+			{% if type == 'a' %}{# tag zatwierdzony #}
+				<li><a
+						class='tag'
+						href="{% url 'sec:section' current_section_name %}?tag={{ tag.slug_or_name }}"
+						title="{{ tag.tooltip }}"
+					>{{ tag.name }}</a> ({{ pop }})</li>
+			{% elif type == 'u' %}{# tag wolny #}
+				<li><a class='usertag' href="{% url 'sec:section' current_section_name %}?tag={{ tag }}">{{ tag }}</a> ({{ pop }})</li>
+			{% endif %}
+			{% endfor %}
+			{% for tmp in usertags %}
+				<li>{{ tmp }}</li>
+			{% endfor %}
+			</ul>
+		</div>
+		{% endblock %}

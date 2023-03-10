@@ -1,0 +1,23 @@
+#site #content {
+	font-size: 2rem;
+}
+
+#site #content img {
+	border-radius: 10px;
+}
+
+#site #content form textarea {
+    width: 90%;
+}
+
+#hidden_form {
+    display: none;
+}
+
+#create_post_submit {
+    float: right;
+}
+
+#tag_input {
+    width: 89%;
+}

@@ -1,0 +1,14 @@
+{% extends 'common/frame.html' %}
+{% load static %}
+
+	{% block sscss %}
+	<link href="{% static 'register/register.css' %}" rel="stylesheet" type="text/css">
+	{% endblock %}
+	
+		{% block ssc %}	
+		<div id="content">
+			{% include 'common/register_form.html' %}
+		</div>
+
+		
+		{% endblock %}

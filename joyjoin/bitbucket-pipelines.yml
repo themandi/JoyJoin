@@ -1,0 +1,11 @@
+image: python:3.5.2
+
+pipelines:
+  default:
+    - step:
+        caches:
+          - pip
+        script:
+          - pip install -r requirements_bb.txt
+          - flake8 --extend-ignore=E261,E501 --exclude=project_page/,service/venv/,service/joyjoin/utils/html5check.py
+          - cd service/joyjoin/ && python manage.py test --parallel --failfast

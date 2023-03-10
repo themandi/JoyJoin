@@ -1,0 +1,24 @@
+{% extends 'common/frame.html' %}
+{% load static %}
+
+	{% block sscss %}
+	<link href='{% static 'regulamin/regulamin.css' %}' rel='stylesheet' type='text/css'>
+    {% endblock %}
+
+    {% block ssc %}
+    <div id="content" class="tekst-dolewej">
+        <h1 class="tekst-wysrodkowany">Regulamin</h1>
+        1. Pisz zwięźle i na temat <br>
+        2. Zanim założysz nowy tag sprawdź, czy taki już nie istnieje (być może pod inną nazwą).<br>
+        3. Postaraj się, aby tytuł posta, który zakładasz był czytelny i zrozumiały.<br>
+        4. Odpowiadając na post, cytuj tylko potrzebne fragmenty, a resztę wycinaj.<br>
+        5. Jeśli zadajesz komuś pytanie, sformułuj je precyzyjnie.<br>
+        6. Nie przeklinaj.<br>
+        7. Nie obrażaj i nie atakuj swoich rozmówców.<br>
+        8. Nie podszywaj się pod innych.<br>
+        9. Nie spamuj - nie zamieszczaj tej samej informacji w wielu miejscach.<br>
+        10. Nie publikuj cudzych wypowiedzi lub artykułów - jeśli chcesz nawiązać do danej wypowiedzi podaj link do źródła<br>
+        11. Nie pisz WIELKIMI literami - w Internecie oznacza to, że krzyczysz. Denerwujesz tym innych.<br>
+        12. Nie publikuj treści o charakterze rasistowskim, homofobicznym, obrażającym uczucia religijne bądź w jakikolwiek sposób obrażające uczucia drugiego człowieka.<br>
+    </div>
+    {% endblock %}

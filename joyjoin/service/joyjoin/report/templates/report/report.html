@@ -1,0 +1,146 @@
+{% extends 'common/frame.html' %}
+{% load static %}
+
+{% block sscss %}
+<link href="{% static 'report/report.css' %}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block ssc %}
+<div id="content" >
+
+    <h1> Zgłoś problem </h1>
+
+    <div id="report">
+        <table>
+            <tr>
+                <td class="user-info">
+                    {% if current_user %}
+                        <a href="{% url 'user:user' current_user.login %}" class="img_login">
+                        <img alt="awatar użytkownika" src="{{current_user.image_mini.url}}">
+                        <i class="name">{{current_user.name}}</i>  <br>
+                    {% else %}
+                        <img src="{% static 'common/img/default_mini.jpg' %}" alt="user_foto">
+                        <br>
+                        <i class="name">Niezalogowany</i>  <br>
+                    {% endif %}
+                </td>
+                <td>
+                    <form id="report_form" action="{% url 'report:add' %}" method="post" autocomplete="off">
+                        {% csrf_token %}
+                        <hr class="px3">
+
+                        Miejsce wystapienia problemu:
+                        <hr class="px0">
+                        <select name="category" >
+                            {% for category in categories %}
+                            <option value="{{category.name}}">{{category.name}}</option>
+                            {% endfor %}
+                        </select>
+
+                        <hr class="px3">
+
+                        Problem:
+                        <hr class="px0">
+                        <textarea  name="text" required placeholder="Napisz treść zgłoszenia..."  ></textarea>
+
+                    </form>
+                </td>
+            </tr>
+        </table>
+
+        <span class="wstaw-button"><input form="report_form" type="submit" value=Wstaw></span>
+        <input type="submit" class="anuluj-button" onclick="location.href='{% url 'all:all' %}';" value="Anuluj"/>
+
+    </div>
+
+    {% if current_user %}
+
+        {% if user_reports %}
+        <h2> Twoje zgloszenia </h2>
+        {% endif %}
+
+        {% for report in user_reports %}
+            <div class="single-report">
+                <table>
+                    <tr>
+                        <td class="user-info">
+                            <a href="{% url 'user:user' current_user.login %}" class="img_login">
+            				<img alt="awatar użytkownika" src="{{current_user.image_mini.url}}">
+                            <br>
+                            <i class="name">{{current_user.name}}</i>  <br>
+                        </td>
+                        <td>
+                            <form method="post" autocomplete="off">
+                                {% csrf_token %}
+                                <hr class="px3">
+
+                                Miejsce wystapienia problemu:
+                                <hr class="px0">
+                                <select disabled name="category">
+                                    <option value=test>{{ report.category.name }}</option>
+                                </select>
+
+                                <hr class="px3">
+
+                                Problem:
+                                <hr class="px0">
+                                <textarea disabled name="post" required placeholder="Napisz treść zgłoszenia..."  >{{ report.text }}</textarea>
+
+                            </form>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <hr class="px3">
+        {% endfor %}
+    {% endif %}
+
+    {% if is_admin %}
+
+        {% if all_reports %}
+        <h2> Wszystkie zgłoszenia </h2>
+        {% endif %}
+
+        {% for report in all_reports %}
+            <div class="single-report">
+                <table>
+                    <tr>
+                        <td class="user-info">
+                            {% if report.user %}
+                                <img src="{% static 'common/img/nofoto.png' %}" alt="user_foto">
+                                <br>
+                                <i class="name">{{ report.user.name }}</i>  <br>
+                            {% else %}
+                                <img src="{% static 'common/img/nofoto.png' %}" alt="user_foto">
+                                <br>
+                                <i class="name">Niezalogowany</i>  <br>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <form method="post" autocomplete="off">
+                                {% csrf_token %}
+                                <hr class="px3">
+
+                                Miejsce wystapienia problemu:
+                                <hr class="px0">
+                                <select disabled name="category">
+                                    <option value=test>{{ report.category.name }}</option>
+                                </select>
+
+                                <hr class="px3">
+
+                                Problem:
+                                <hr class="px0">
+                                <textarea disabled name="post" required placeholder="Napisz treść zgłoszenia..."  >{{ report.text }}</textarea>
+
+                            </form>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <hr class="px3">
+        {% endfor %}
+    {% endif %}
+
+</div>
+{% endblock %}

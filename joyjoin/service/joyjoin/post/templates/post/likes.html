@@ -1,0 +1,11 @@
+{% if is_liked %}
+    <i class="icon-heart liked"></i> <b>{{liked}}</b>
+{% else %}
+    <i class="icon-heart"></i> <b>{{liked}}</b> 
+{% endif %}
+<br>
+{% if is_disliked %}
+    <i class="icon-heart-broken disliked"></i> {{disliked}}
+{% else %}
+    <i class="icon-heart-broken"></i> {{disliked}} 
+{% endif %}

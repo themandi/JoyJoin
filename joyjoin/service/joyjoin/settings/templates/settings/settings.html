@@ -1,0 +1,40 @@
+{% extends 'common/frame.html' %}
+{% load static %}
+
+	{% block sscss %}
+	<link href='{% static 'settings/settings.css' %}' rel='stylesheet' type='text/css'>
+	{% endblock %}
+
+		{% block ssc %}
+		<div id='content'>
+			<div id='profile'>
+				<div id='header'>
+					<h1>Ustawienia użytkownika</h1>
+				</div>
+				{% if messages %}
+				<ul id="messages">
+					{% for msg in messages %}
+					<li {% if msg.tags %} class="{{ msg.tags }}" {% endif %}>
+						{{ msg }}
+					</li>
+					{% endfor %}
+				</ul>
+				{% endif %}
+				<b>Login: </b> {{ user.login}} <br>
+				<img class="avatar" src="{{user.image.url}}"><br>
+				<form action="{% url 'settings:complete' %}" method="post"   enctype="multipart/form-data" autocomplete="on">
+				{% csrf_token %}
+				<input type="file" name="image" ><br>
+				<input name="name" type="text" required placeholder='Imię i nazwisko' value="{{ user.name }}"><br>
+				<input name="email" type="email" required placeholder='E-mail' value="{{ user.email }}"><br>
+				<input name="birth_date" type="date" required value="{{ user.birth_date|date:'Y-m-d' }}"><br>
+				<input name="password" type="password" placeholder='Hasło'><br>
+				<input name="password_2" type="password" placeholder='Powtórz hasło'><br>
+				<textarea id="user_description" name="description" type="text" placeholder="Tu wpisz swój opis">{{ user.description|default:'' }}</textarea><br>
+				<input type="submit" value=ZAPISZ>
+				</form>
+
+			</div>
+
+		</div>
+		{% endblock %}

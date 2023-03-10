@@ -1,0 +1,33 @@
+{% extends 'common/frame.html' %}
+{% load static %}
+
+	{% block sscss %}
+	<link href='{% static 'sec/styles/preferences.css' %}' rel='stylesheet' type='text/css'>
+	{% endblock %}
+	
+		{% block ssc %}
+		<div id='content'>
+			<h1>Preferencje</h1> <br>
+
+			<form action="{% url 'sec:update_punctation' current_section_name %}" method="post">
+			{% csrf_token %}
+            {% for section_name, tps in tags_to_display.items %}
+                <h2>{{section_name}}</h2>
+                {% for tp in tps %}
+                    <div class="tag_punctation_row">
+                        <span class="tag_name">{{tp.tag.name}}</span>
+                        <span>
+                            <input type="range" id="range_{{tp.tag.id}}" name="{{tp.tag.id}}" min="-10" max="10" step="1" value="{{tp.punctation}}" oninput="changeCounter('{{tp.tag.id}}')">
+                            <span id="counter_{{tp.tag.id}}" class="counter">{{tp.punctation}}</span>
+                        </span> 
+                        <button onclick="resetCounter('{{tp.tag.id}}', {{tp.punctation}})" class='reset_button'>Reset</button>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+            <label><input type="checkbox" name="is_punctation_changeable" {{is_punctation_changeable}}> Pozwalaj algorytmowi na automatyczne modyfikowanie tych wartości </label> <br>
+        
+            <input type="submit" value="Zapisz">
+            </form> <br>
+			Ostatnia modyfikacja: {{last_update_punctation_time}}
+		</div>
+		{% endblock %}

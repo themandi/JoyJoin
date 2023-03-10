@@ -1,0 +1,110 @@
+{% extends 'common/frame.html' %}
+{% load static %}
+
+    {% block hero-image %}
+	<div id="hero-image">
+        <div>
+            <img src="{% static 'common/img/logo/jj1000x300_shadow.png' %}" alt="logo">
+            <h1>Dołącz do zabawy!</h1>
+        </div>
+    </div>
+	{% endblock %}
+
+	{% block sscss %}
+	<link href="{% static 'about/about.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'sec/styles/sec.css' %}" rel="stylesheet" type="text/css">
+	{% endblock %}
+
+		{% block ssc %}
+		<div id="content">
+			<h1>O stronie</h1>
+			<p>
+				<!-- oryginalny opis
+				JoyJoin jest serwisem społecznościowym skupionym wokół zainteresowań użytkowników. Przeznaczony jest dla osób,
+				które chcą rozwijać swoje hobby bądź chcą pomóc w tym innym osobom. Nasza strona zawiera posty, które są
+				podzielone na sekcje i zawierają różne tagi odpowiadające danym postom. Na stronie możesz znaleźć poradniki,
+				wydarzenia dotyczące danego zainteresowania, ogłoszenia użytkowników oraz wiele innych rzeczy. Cała strona jest
+				pod kontrolą administratorów oraz moderatorów, którzy utrzymują porządek i ład na JoyJoin. Głównymi zaletami są
+				przejrzyste oraz proste interfejsy, które pozwalają uczestnikom obsługiwać ją bez pomocy samouczka!
+				Strona internetowa wspiera zrzeszanie wspólnoty ludzi, które posiadają te same hobby oraz umożliwa ich spotkania
+				i porozumiewanie się za pomocą wiadomości prywatnych, komentarzy. Każdy użytkownik posiada własny profil, na którym
+				umieszczone zostały jego posty. Tym sposobem nasz profil przedstawia naszą wizytówkę co może skutkować
+				możliwością przedstawienia profilu w przyszłej pracy.
+				-->
+				<!-- edycja dla zwiększenia poprawności językowej i zgodności z funkcjonalnościami -->
+				JoyJoin jest serwisem społecznościowym skupionym wokół zainteresowań
+				użytkowników. Przeznaczony jest dla osób, które chcą rozwijać swoje hobby i
+				pomagać w tym innym.
+				System sekcji i tagów pomaga dotrzeć do interesujących użytkownika treści.
+				Użytkownicy mogą używać tagów lokalizacji aby oznaczać lokalne wydarzenia
+				dotyczące danego zainteresowania.
+				Strona jest pod kontrolą administratorów oraz moderatorów, którzy utrzymują
+				na niej porządek.
+			</p>
+            <div class="break"></div>
+            
+            <h1>Co oferujemy?</h1>
+            <div id="blocks">
+                <div id="block1" class="block">
+                    <span>
+                        <i class="icon-brush"></i><br>
+                        możliwość rozwijania nowych zainteresowań
+                    </span>
+                </div>	
+                <div id="block2" class="block">
+                    <span>
+                        <i class="icon-users"></i><br>
+                        poznawanie nowych osób dzięki serwisowi
+                    </span>
+                </div>
+                <div id="block3" class="block">
+                    <span>
+                        <i class="icon-crown"></i><br>
+                        organizowanie eventów oraz konkursów
+                    </span>
+                </div>
+
+                <div id="block4" class="block">
+                    <span>
+                        <i class="icon-star"></i><br>
+                        wyróżnienie aktywnych użytkowników
+                    </span>
+                </div>	
+                <div id="block5" class="block">
+                    <span>
+                        <i class="icon-emo-happy"></i><br>
+                        przede wszystkim świetną zabawę
+                    </span>
+                </div>
+            </div>
+            <div class="break"></div>
+            
+            <h1>Jak zacząć?</h1>
+				<p>
+				Aby mieć dostęp do pełnych uprawnień na stronie należy kliknąć
+				przycisk Zarejestruj,
+				podać poprawne dane i zalogować się na stronę.
+				Będąc zalogowanym użytkownikiem otrzymujesz nowe uprawnienia
+				takie jak tworzenie postów, serduszkowanie,
+				komentowanie i wiele innych.
+				</p>
+				<p>
+				Możesz również <a href="{% url 'all:all' %}">przejść do strony</a> bez logowania się.
+				</p>
+
+            <div class="break"></div>
+            
+            <h1>Film promocyjny</h1>
+            <div >
+                <iframe id="film" src="https://www.youtube.com/embed/5qQJUXLEUyA" frameborder="0" allowfullscreen></iframe>
+            </div>
+		</div>
+		{% endblock %}
+        
+    {% block available-options %}
+        <li> <a href="{% url 'all:all' %}">Przejdź do serwisu</a> </li>
+	{% endblock %}
+        
+    {% block ssjs %}
+        <script src="{% static 'sec/scripts/scripts.js' %}" type="text/javascript"></script>
+    {% endblock %}

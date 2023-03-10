@@ -1,0 +1,117 @@
+#site #content {
+	font-size: 1.7rem;
+}
+
+#site #content #report {
+    border-width: 0px;
+    background-color: rgb(238, 238, 238);
+    border-radius: 5px;
+    border-color: lightgrey;
+    padding-bottom: 42px;
+    padding-right: 5px;
+}
+
+#site #content .single-report {
+    border-width: 0px;
+    background-color: rgb(238, 238, 238);
+    border-radius: 5px;
+    border-color: lightgrey;
+    padding-bottom: 5px;
+    padding-right: 5px;
+}
+
+#site #content table{
+    width: 100%;
+    padding: 5px;
+    margin: 0px 0px 0px 0px;
+    padding: 0px 0px 0px 0px;
+}
+
+#site #content .user-info {
+    width: 25%;
+    max-width: 115px;
+    text-align:center;
+    word-wrap: break-word;
+}
+
+#site #content .name {
+    all: unset;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.3rem;
+}
+
+#site #content .login {
+    all: unset;
+    text-align: center;
+    font-size: 1.3rem;
+}
+
+#site #content hr.px3 {
+    margin: 3px 0px 0px 0px;
+    padding: 0px 0px 0px 0px;
+    visibility: hidden;
+}
+
+#site #content hr.px0 {
+    margin: 0px 0px 0px 0px;
+    padding: 0px 0px 0px 0px;
+    visibility: hidden;
+}
+
+#site #content a {
+    text-decoration: none;
+    color: black;
+}
+
+#site #content img {
+	width: 80%;
+	border-radius: 10px;
+}
+
+#site #content form textarea {
+    width: 90%;
+    resize: none;
+    padding: 5px 5px 5px 5px;
+    height: 100px;
+    margin: 0px 0px 0px 0px;
+}
+
+#site #content .wstaw-button {
+    float: right;
+    margin-left: 5px;
+    margin-top: 10px
+}
+
+#site #content .anuluj-button {
+    float: right;
+    margin-top: 10px;
+}
+
+#site #content input {
+    font-size: 1.2rem;
+}
+
+#site #content h1 {
+    background-color: #fa8a38;
+    color: white;
+    font-weight: bold;
+    font-size: 1.8rem;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    text-align: center;
+    margin-top: 0px;
+    margin-bottom: 9px;
+}
+
+#site #content h2 {
+    background-color: #fa8a38;
+    color: white;
+    font-weight: bold;
+    font-size: 1.8rem;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    text-align: center;
+    margin-top: 18px;
+    margin-bottom: 9px;
+}

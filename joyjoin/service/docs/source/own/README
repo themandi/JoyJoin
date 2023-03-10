@@ -1,0 +1,3 @@
+To są pliki napisane ręcznie, podobnie jak index.rst w folderze nadrzędnym.
+Pozostałe pliki rST w folderze nadrzędnym są generowane automatycznie, stąd
+oddzielny katalog dla zaznaczenia tego podziału.

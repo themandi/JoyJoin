@@ -1,0 +1,160 @@
+{% load static %}
+
+
+{% if this_is_post_view %}
+<div id="goback"> <p> <a href="javascript:history.back();"><i class="icon-angle-double-left"></i>Powrót</a> </p> </div>
+{% endif %}
+
+<div class="post">
+	<div class="header">
+		<a href="{% url 'user:user' post.author.login %}"> <img class="avatar" alt="awatar autora" src="{{post.author.image_mini.url}}"> </a>
+		<div class="sender">
+			<a href="{% url 'user:user' post.author.login %}" class="name">{{ post.author.name }}</a> <br>
+		<span class="post_creation_rel_time">{{ post.creation_rel_time }}</span><br>
+		{% if this_is_the_all_view %}
+			<a href="{% url 'sec:section' post.section.name %}" class="link-section"><i class="icon-{{post.section.icon}}"></i>{{post.section.description}}</a>
+		{% endif %}
+		</div>
+	</div>
+
+	{% if this_is_create_view %}
+		Tagi: <input id="tag_input"></input>
+	{% elif post.tags.all or post.implied_tags.all or post.user_tags_as_list %}
+	<div class="tags">
+	{% for tag in post.tags.all %}
+		<a
+			class='tag'
+			href="{% url 'sec:section' post.section.name %}?tag={{ tag.slug_or_name }}"
+			title="{{ tag.tooltip }}"
+		>{{ tag.name}}</a>
+	{% endfor %}
+	{% for tag in post.implied_tags.all %}
+		<a
+			class='implied_tag'
+			href="{% url 'sec:section' post.section.name %}?tag={{ tag.slug_or_name }}"
+			title="{{ tag.tooltip }}"
+		>{{ tag.name}}</a>
+	{% endfor %}
+	{% for tag in post.user_tags_as_list %}
+		<a class='usertag' href="{% url 'sec:section' post.section.name %}?tag={{ tag|urlencode }}">{{ tag }}</a>
+	{% endfor %}
+	</div>
+	{% endif %}
+
+	<a {% if not this_is_post_view and not this_is_create_view %}href="{% url 'post:post' post.id %}"{% endif %} class="title" {% if this_is_create_view %} id="preview_post_title" contenteditable {% endif %}>{{ post.title }}</a>
+	<div id="post_text_{{post.id}}" class="post_text {% if not this_is_post_view and not this_is_create_view %} abbreviated {% endif %}">
+		{% if not this_is_create_view %}
+			<p {% if this_is_create_view %} contenteditable {% endif %}>
+				{% autoescape off %}
+					{{ post.text }}
+				{% endautoescape %}
+			</p>
+		{% else %}
+			<div id="quill"></div>
+		{% endif %}
+	</div>
+
+	{% if not this_is_post_view and not this_is_create_view %}
+		<a id="see_more_{{post.id}}" class="see-more" onclick="show_full_post({{post.id}})">Zobacz więcej<i class="icon-down-dir-2"></i></a>
+	{% endif %}
+
+	<hr>
+	<div class="feedback">
+		<form id="like_form_{{post.id}}" action="{% url 'post:vote' 1 %}" method="post">
+			{% csrf_token %}
+			<input type="hidden" name="post_id" value="{{post.id}}">
+		</form>
+		<form id="dislike_form_{{post.id}}" action="{% url 'post:vote' 2 %}" method="post">
+			{% csrf_token %}
+			<input type="hidden" name="post_id" value="{{post.id}}">
+		</form>
+
+		<ul class="post_options">
+			<li onclick="like('like', {{post.id}});">
+				<span id="like_button_{{post.id}}">
+					{% if is_liked %}
+						<i class="icon-heart liked"></i> <b>{{liked}}</b>
+					{% else %}
+						<i class="icon-heart"></i> <b>{{liked}}</b>
+					{% endif %}
+				</span>
+			</li>
+			<li onclick="like('dislike', {{post.id}});">
+				<span id="dislike_button_{{post.id}}">
+					{% if is_disliked %}
+						<i class="icon-heart-broken disliked"></i> {{disliked}}
+					{% else %}
+						<i class="icon-heart-broken"></i> {{disliked}}
+					{% endif %}
+				</span>
+			</li>
+			{% if current_user %}
+				<li id="post{{post.id}}button_reply"> <i class="icon-comment"></i> Skomentuj </li>
+			{% else %}
+				<li id="login"> <i class="icon-comment"></i> Skomentuj </li>
+			{% endif %}
+			<li> <i class="icon-hammer"></i> Zgłoś </li>
+		</ul>
+	</div>
+
+	<!-- Kontener komentarzy -->
+	{% if not this_is_create_view %}
+	<div class="comments">
+		<hr>
+		{% if this_is_post_view %}
+			<form action="{% url 'post:change_sorting' %}" method="post" autocomplete="off">
+				{% csrf_token %}
+				Sortuj po:
+				<input hidden name='post_id' value={{post.id}}>
+				<select name="sort_type" onchange="submit()">
+					{% for type in sort_types %}
+						<option value="{{type}}"{% if type == selected_sort_type %} selected{% endif %}>{{type}}</option>
+					{% endfor %}
+				</select>
+			</form>
+		{% endif %}
+
+		{% if current_user %}
+			<!-- Kontener panelu odpowiedzi -->
+			<div hidden id="post{{post.id}}reply_panel" class="reply_panel">
+				<a href="{% url 'user:user' current_user.login %}" class="img_login">
+					<img alt="awatar użytkownika" src="{{current_user.image_mini.url}}">
+					<b>{{ current_user.name }}</b>
+				</a>
+
+				<form action="{% url 'post:reply' %}" method="post" autocomplete="off">
+					{% csrf_token %}
+					<input type="hidden" name="post_id" value="{{post.id}}">
+					<input type="hidden" name="comm_id" value="None">
+					<textarea name="comment" required placeholder="Napisz komentarz..."></textarea>
+					<input type="submit" value="Dodaj komentarz">
+				</form>
+			</div>
+		{% endif %}
+
+		{% if post.count_all_comments > 0 %}
+			{% if this_is_post_view %}					
+				{% for comm, comm_likes, comm_dislikes, comm_is_liked, comm_is_disliked in comments_list %}
+					{% include 'post/comment.html' %}
+				{% endfor %}
+			{% else %}
+				{% include 'post/simple_comment.html' %}
+			{% endif %}
+		{% endif %}
+	</div>
+	{% endif %}
+</div>
+
+<!-- Skrypt do obslugi przycisku "Skomentuj" -->
+<script>
+	document.getElementById("post{{post.id}}button_reply").addEventListener("click", function() {
+			if (document.getElementById("post{{post.id}}reply_panel").hidden == true) {
+				// otworzenie panelu odpowiedzi
+				document.getElementById("post{{post.id}}reply_panel").hidden = false;
+			}
+			else {
+				// zakmniecie panelu odpowiedzi
+				document.getElementById("post{{post.id}}reply_panel").hidden = true;
+			}
+		}, false);
+</script>

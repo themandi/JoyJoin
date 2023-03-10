@@ -1,0 +1,104 @@
+<div id="register_form">
+    <h1>Rejestracja</h1>
+    {% if messages %}
+        <ul id="messages">
+            {% for msg in messages %}
+                <li {% if msg.tags %} class="{{ msg.tags }}" {% endif %}>
+                    {{ msg }}
+                </li>
+            {% endfor %}
+        </ul>
+
+    {% endif %}
+
+    <!-- Formy do przesyłu wiadomości przez ajax -->
+    <form id="rpf_login_request" action="{% url 'register:is_login_unused' %}" method="post" autocomplete="on">
+    {% csrf_token %}
+    <input id="rpf_login_request_input" name="login" type="hidden">
+    </form>
+
+    <form id="rpf_password_request" action="{% url 'register:is_password_uncommon' %}" method="post" autocomplete="on">
+    {% csrf_token %}
+    <input id="rpf_password_request_input" name="password" type="hidden">
+    </form>
+
+    <form id="rpf_date_request" action="{% url 'register:is_age_ok' %}" method="post" autocomplete="on">
+    {% csrf_token %}
+    <input id="rpf_date_request_input" name="date" type="hidden">
+    </form>
+
+    <!-- Formularz rejestracji i warningi -->
+    <form id="register_panel_form" action="{% url 'register:complete' %}" method="post" autocomplete="on">
+        {% csrf_token %}
+        <input id="rpf_login" name="login" type="text" required placeholder="Nazwa użytkownika"> 
+        <div class="warning" id="warning_panel_rpf_login">
+            <label id="rpf_login_empty"> pole nie może być puste </label>
+            <label  id="rpf_login_used"> login jest już zajęty </label>
+            <hr id="rpf_login_bad_length_hr">
+            <label id="rpf_login_bad_length"> login musi mieć 3 do 20 znaków </label>
+            <hr id="rpf_login_first_letter_hr">
+            <label id="rpf_login_first_letter"> login musi zaczynać się od litery </label>
+            <hr id="rpf_login_bad_character_hr">
+            <label id="rpf_login_bad_character"> login może zawierać jedynie małe litery i liczby </label>
+        </div>               
+        <br>
+
+        <input id="rpf_name" name="name" type="text" required placeholder="Imię i nazwisko"> 
+        <div class="warning" id="warning_panel_rpf_name">
+            <label id="rpf_name_empty"> pole nie może być puste </label>
+            <hr id="rpf_name_bad_length_hr">
+            <label id="rpf_name_bad_length"> imię i nazwisko muszą mieć od 3 do 63 znaków </label>
+            <hr id="rpf_name_bad_character_hr">
+            <label id="rpf_name_bad_character"> imię i nazwisko mogą zawierać jedynie litery i spacje </label>
+        </div>               
+        <br>
+
+        <input id="rpf_email" name="email" type=email required placeholder="E-mail">
+        <div class="warning" id="warning_panel_rpf_email">
+            <label id="rpf_email_empty"> pole nie może być puste </label>
+            <label id="rpf_email_bad"> adres email nieprawidłowy </label>
+        </div> 
+        <br>
+
+        <input id="rpf_password" name="password" type=password required placeholder="Hasło">
+        <div class="warning" id="warning_panel_rpf_password">
+            <label id="rpf_password_empty"> pole nie może być puste </label>
+            <label id="rpf_password_short"> hasło musi mieć co najmniej 8 znaków </label>
+            <hr id="rpf_password_numeric_hr">
+            <label id="rpf_password_numeric"> hasło nie może składać się tylko z cyfr </label>
+            <label id="rpf_password_too_common"> hasło zbyt proste </label>
+        </div> 
+        <br>
+
+        <input id="rpf_password2" name="password_2" type=password disabled required placeholder="Powtórz hasło">
+        <div class="warning" id="warning_panel_rpf_password2">
+            <label id="rpf_password2_empty"> pole nie może być puste </label>
+            <label id="rpf_password2_different"> hasło różni się od pierwszego </label>
+        </div> 
+        <br>
+        
+        {% comment "Na razie nie zbieramy takich informacji" %}
+        <select name="gender">
+                <option disabled selected>Płeć</option>
+                <option>Meżczyzna</option>
+                <option>Kobieta</option>
+        </select><br>
+        {% endcomment %}
+        
+        <input id="rpf_birth_date" name="birth_date" type="date">
+        <div class="warning" id="warning_panel_rpf_birth_date">
+            <label id="rpf_birth_date_empty"> należy podać datę urodzenia </label>
+            <label id="rpf_birth_date_age"> musisz być w wieku między 12 a 120 lat aby założyć konto </label>
+        </div> 
+        <br>
+
+        <input id="rpf_rules" name="rules" type="checkbox" required>
+        <span id="accept_rules">Akceptuję regulamin</span>
+        <div class="warning" id="warning_panel_rpf_rules">
+            <label id="rpf_rules_empty"> należy zaakceptować regulamin </label>
+        </div> 
+        <br>
+
+        <input id="rpf_submit" type="button" value="REJESTRUJ" onclick="form_submit()">
+    </form>
+</div>

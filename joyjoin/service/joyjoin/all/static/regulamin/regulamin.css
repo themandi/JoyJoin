@@ -1,0 +1,10 @@
+#site #content {
+	text-align: center;
+	line-height: 2;
+	
+	font-size: 1.6rem;
+}
+
+#site #content h1{
+	margin: 0;
+}

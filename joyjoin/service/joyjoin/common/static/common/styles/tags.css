@@ -1,0 +1,23 @@
+#tag_list li a, .tags a {
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+    display: inline-block;
+    margin-bottom: 2px;
+    margin-top: 2px;
+    padding: 3px 5px;
+    text-decoration: none;
+    font-size: 1.6rem;
+}
+
+.tag {
+    background-color: var(--tag-color);
+}
+
+.implied_tag {
+    background-color: var(--implied-tag-color);
+}
+
+.usertag {
+    background-color: var(--usertag-color);
+}

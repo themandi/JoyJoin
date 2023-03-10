@@ -1,0 +1,46 @@
+#site #content {
+	text-align: center;
+	line-height: 2;
+	
+	font-size: 2rem;
+}
+
+#site #content h1{
+	margin: 0;
+}
+
+#messages li {
+	color: white;
+	list-style: none;
+}
+
+#messages .error {
+	background: #A00;
+}
+
+#messages .success {
+	background: #0A0;
+}
+
+
+#site #content form{
+	margin-top: 20px;
+}
+
+#site #content form input, #site content form select{
+	padding: 10px;
+	border-radius: 10px;
+	width: 200px;
+}
+
+#site #content form input[type="checkbox"]{
+	width: 14px;
+	height: 14px;
+}
+
+#site #content form input[type="button"]{
+	margin-top: 20px;
+	width: 200px;
+	text-align:center;
+}
+

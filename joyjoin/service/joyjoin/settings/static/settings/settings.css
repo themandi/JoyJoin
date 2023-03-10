@@ -1,0 +1,47 @@
+#site #content {
+	text-align: center;
+	line-height: 2;
+	
+	font-size: 2rem;
+}
+
+#site #content h1{
+	margin: 0;
+    font-size: 2.8rem;
+}
+
+#site #content img {
+    width: 60%;
+}
+
+#messages li {
+	color: white;
+	list-style: none;
+}
+
+#messages .error {
+	background: #A00;
+}
+
+#messages .success {
+	background: #0A0;
+}
+
+#site #content form input, #site #content form select, #site #content textarea{
+	padding: 8px 15px;
+	border-radius: 10px;
+	width: 200px;
+}
+
+#site #content form input[type="submit"]{
+	width: 200px;
+	text-align:center;
+}
+
+#site #content form input {
+    margin: 5px;
+}
+
+#site #content .avatar {
+    border-radius: 10px;
+}

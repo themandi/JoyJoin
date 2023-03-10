@@ -1,0 +1,78 @@
+{% extends 'common/frame.html' %}
+{% load static %}
+
+
+	{% block sscss %}
+    <link href="{% static 'sec/styles/sec.css' %}" rel="stylesheet" type="text/css">
+	<link href="{% static 'post/post.css' %}" rel="stylesheet" type="text/css">
+	<link href="{% static 'post/simple_comment.css' %}" rel="stylesheet" type="text/css">
+	{% endblock %}
+
+	{% block hero-image %}
+	<div id="hero-image"{% if not this_is_the_all_view %} class="sec" style="background-image: url('/static/common/img/{{section_name}}.jpg');" {% endif%}>
+        <div>
+            {% if this_is_the_all_view %}
+            <img src="{% static 'common/img/logo/jj1000x300_shadow.png' %}" alt="logo">
+            <h1>Dołącz do zabawy!</h1>
+            {% else %}
+            <h1><i class="icon-{{current_section.icon}}"></i>{{current_section.description}}</h1>
+            {% endif %}
+        </div>
+    </div>
+	{% endblock %}
+
+	{% block ssc %}
+	<div id="content">
+
+		{% for post,liked,disliked,is_liked,is_disliked,comments in posts_to_display %}
+		{% include 'post/single_post.html' %}
+		{% endfor %}
+	</div>
+	{% endblock %}
+
+	{% block available-options %}
+        {% if not this_is_the_all_view %}
+        <li><a href="{% url 'sec:tags' section_name %}">Tagi</a></li>
+        {% endif %}
+		{% if current_user  %}
+			<li> <a href="{% url 'create:create' %}">Napisz post</a> </li>
+
+			{% if not this_is_the_all_view %}
+				{% if not current_user_in_current_section %}
+				<li><a href="{% url 'sec:join' section_name %}">Dołącz do tej sekcji</a></li>
+				{% else %}
+					<li><a href="{% url 'sec:leave' section_name %}">Opuść tą sekcję</a></li>
+				{% endif %}
+                <li> <a href="{% url 'sec:preferences' section_name %}">Algorytm sortowania</a> </li>
+			{% else %}
+                <li> <a href="{% url 'all:preferences' %}">Algorytm sortowania</a> </li>
+            {% endif %}
+		{% endif %}
+    {% endblock %}
+
+    {% block right-menu %}
+	<ul>
+		<li>Najbardziej aktywni użytkownicy</li>
+		{% for user in participants %}
+        <li><a href="{% url 'user:user' user.login %}"><img class="avatar" alt="awatar użytkownika" src="{{user.image_mini.url}}"><span>{{user.name}}</span></a></li>
+        {% endfor %}
+	</ul>
+	{% endblock %}
+    
+    {% block ssjs %}
+        <script src="{% static 'sec/scripts/scripts.js' %}" type="text/javascript"></script>
+    {% endblock %}
+    
+    {% block forms %}
+    <div id="up">
+        <i class="icon-up"></i>
+    </div>
+    
+	<form id="display_new_posts" action="{% url 'post:display_new_posts' %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="section_name" value="{{section_name}}">
+        {% if tag_name %}
+        <input type="hidden" name="tag_name" value="{{tag_name}}">
+        {% endif %}
+    </form>
+	{% endblock %}
